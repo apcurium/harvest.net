@@ -204,10 +204,13 @@ namespace Harvest.Net
         /// <param name="ofUser">The user the entry belongs to</param>
         internal Timer UpdateDaily(long dayEntryId, DailyOptions options, long? ofUser)
         {
-            var request = Request("daily/update/" + dayEntryId, RestSharp.Method.POST);
+            string path = "daily/update/" + dayEntryId;
+			if (ofUser != null)
+			{
+                path = path + $"?of_user={ofUser.Value}";
+			}
 
-            if (ofUser != null)
-                request.AddParameter("of_user", ofUser.Value);
+            var request = Request(path, RestSharp.Method.POST);
 
             request.AddBody(options);
 
